@@ -1,0 +1,29 @@
+{
+    "name": "Weather extension",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "Get weather for your location",
+    "icons": {
+        "128": "128.jpg",
+        "48": "48.jpg",
+        "19": "19.jpg",
+        "16": "16.jpg"
+    },
+    "default_locale": "en",
+    "browser_action": {
+        "default_popup": "index.html",
+        "default_icon": "128.jpg",
+        "default_title": "Weather extension"
+    },
+    "permissions": [
+        "geolocation"
+    ],
+    "content_scripts": [{
+        "matches": [
+            "https://www.google.com/*"
+        ],
+        "js": [
+            "script.js"
+        ]
+    }]
+}

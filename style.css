@@ -6,6 +6,8 @@
 
 body {
   padding-top: 50px;
+  width: 500px;
+  height: 400px;
 }
 
 .starter-template {
@@ -16,13 +18,13 @@ body {
 .input-group.weatherSearch {
   margin-bottom: 20px;
   box-sizing: border-box;
-  
+
 }
 
 .container.responsive {
   border: 1px solid black;
   border-radius: 15px;
-  width: 50%;
+  width: 80%;
   height: 70vh;
 }
 
