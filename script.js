@@ -16,7 +16,7 @@ $(document).ready(function() {
             if (inputBox.value !== '') {
                 city = inputBox.value;
                 /*get url to connect to JSON with weather infro for choosen city */
-                url = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + api;
+                url = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + api;
                 console.log(url);
                 /*get data from openweathermap API */
                 $.ajax({
@@ -38,7 +38,7 @@ $(document).ready(function() {
                 /*get data from openweathermap API */
                 $.ajax({
                     url: navigator.geolocation.getCurrentPosition(function(getPosition) {
-                        "lat={" + getPosition.coords.latitude + "}&lon={" + getPosition.coords.longitude + "}"
+                        "https://api.openweathermap.org/data/2.5/forecast?lat={" + getPosition.coords.latitude + "}&lon={" + getPosition.coords.longitude + "}&appid=" + api;
                     }),
                     dataType: 'json',
                     success: getWeatherInfo,
