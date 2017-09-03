@@ -36,14 +36,13 @@ $(document).ready(function() {
         gpsButton.addEventListener('click', function() {
             if (navigator.geolocation) {
                 /*get url to connect to JSON with weather infro for choosen city */
-                function getLocation() {
-                    navigator.geolocation.getCurrentPosition(function(getPosition) {
-                        return "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
-                    });
-                };
+                navigator.geolocation.getCurrentPosition(function(getPosition) {
+                    var getUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
+                    localStorage.setItem('GPSLOCATION', getUrl);
+                });
                 /*get data from openweathermap API */
                 $.ajax({
-                    url: getLocation(),
+                    url: localStorage.getItem('GPSLOCATION'),
                     dataType: 'json',
                     success: getWeatherInfo,
                     error: function(err) {
