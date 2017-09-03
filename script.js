@@ -44,6 +44,7 @@ $(document).ready(function() {
                     success: getWeatherInfo,
                     error: function(err) {
                         console.log('ERROR: ' + err);
+                        console.log(url);
                     }
                 });
             } else {
