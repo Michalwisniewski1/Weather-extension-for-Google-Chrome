@@ -8,11 +8,16 @@ $(document).ready(function() {
     var handleBoxSearch = function() {
         var inputBox = document.getElementById('weatherSearch');
         var button = document.getElementById('clickToFind');
+        var gpsButton = document.getElementById('getGPSlocation');
+        var city;
+        var url;
+
         button.addEventListener('click', function() {
             if (inputBox.value !== '') {
-                var city = inputBox.value;
+                city = inputBox.value;
                 /*get url to connect to JSON with weather infro for choosen city */
-                var url = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + api ;
+                url = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + api;
+                console.log(url);
                 /*get data from openweathermap API */
                 $.ajax({
                     url: url,
@@ -27,6 +32,25 @@ $(document).ready(function() {
                 console.log('Type correct name of city');
             }
         });
+
+        gpsButton.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                /*get data from openweathermap API */
+                $.ajax({
+                    url: navigator.geolocation.getCurrentPosition(function(getPosition) {
+                        "lat={" + getPosition.coords.latitude + "}&lon={" + getPosition.coords.longitude + "}"
+                    }),
+                    dataType: 'json',
+                    success: getWeatherInfo,
+                    error: function(err) {
+                        console.log('ERROR: ' + err);
+                    }
+                });
+            } else {
+                document.querySelector('.container.responsive').style.border = 'thin dotted red';
+                console.log('Geolocation is not supported by your browser');
+            }
+        });
     };
 
     var getWeatherInfo = function(data) {
@@ -39,7 +63,6 @@ $(document).ready(function() {
         var fourthDay = [];
         var fivethDay = [];
         var lastDay = [];
-        console.log(list);
         /*Iterate in array of objects and sort it by date */
         for (var i = 0; i < list.length; i++) {
             switch (list[i].dt_txt.match(/-(\d+)(?!.*\-d?)/)[1]) {
@@ -122,6 +145,7 @@ $(document).ready(function() {
             getRainInfo(getWeatherConditions(lastDay));
             getHighestTemp(setTemperature(lastDay));
             getLowestTemp(setTemperature(lastDay));
+            console.log(data);
         }
     };
 
@@ -176,18 +200,18 @@ $(document).ready(function() {
     var sortArrByOccurence = function(array) {
         if (array.length == 0)
             return null;
-        var modeMap = {};
+        var elements = {};
         var maxEl = array[0],
             maxCount = 1;
         for (var i = 0; i < array.length; i++) {
             var el = array[i];
-            if (modeMap[el] == null)
-                modeMap[el] = 1;
+            if (elements[el] == null)
+                elements[el] = 1;
             else
-                modeMap[el]++;
-            if (modeMap[el] > maxCount) {
+                elements[el]++;
+            if (elements[el] > maxCount) {
                 maxEl = el;
-                maxCount = modeMap[el];
+                maxCount = elements[el];
             }
         }
         return maxEl;
