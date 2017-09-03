@@ -35,16 +35,19 @@ $(document).ready(function() {
 
         gpsButton.addEventListener('click', function() {
             if (navigator.geolocation) {
+                /*get url to connect to JSON with weather infro for choosen city */
+                function getLocation() {
+                    navigator.geolocation.getCurrentPosition(function(getPosition) {
+                        return "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
+                    });
+                };
                 /*get data from openweathermap API */
                 $.ajax({
-                    url: navigator.geolocation.getCurrentPosition(function(getPosition) {
-                        "https://api.openweathermap.org/data/2.5/forecast?lat={" + getPosition.coords.latitude + "}&lon={" + getPosition.coords.longitude + "}&appid=" + api;
-                    }),
+                    url: getLocation(),
                     dataType: 'json',
                     success: getWeatherInfo,
                     error: function(err) {
                         console.log('ERROR: ' + err);
-                        console.log(url);
                     }
                 });
             } else {
