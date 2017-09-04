@@ -10,6 +10,10 @@ body {
     height: 450px;
 }
 
+.hide {
+    display: none!important;
+}
+
 .starter-template {
     padding: 40px 15px;
     text-align: center;
@@ -24,9 +28,12 @@ body {
     margin: 0 auto;
 }
 
-.container.responsive {
+.border {
     border: 1px solid black;
     border-radius: 15px;
+}
+
+.container.responsive {
     width: 80%;
     height: 70vh;
 }

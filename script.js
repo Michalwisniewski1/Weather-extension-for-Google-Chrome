@@ -89,6 +89,9 @@ $(document).ready(function() {
                     break;
             }
         }
+        console.log(tomorrow);
+        console.log(getRainInfo(today));
+        console.log(setTemperature(tomorrow).sort()[tomorrow.length - 1]);
 
         if (today.length > 1) {
             /* Data of today*/
@@ -148,12 +151,16 @@ $(document).ready(function() {
             getRainInfo(getWeatherConditions(lastDay));
             getHighestTemp(setTemperature(lastDay));
             getLowestTemp(setTemperature(lastDay));
-            console.log(data);
+
         }
     };
 
     var sortNumbers = function(a, b) {
         return a - b;
+    };
+
+    var callback = function(callback) {
+        return callback;
     };
 
     var getDate = function(date) {
@@ -179,19 +186,20 @@ $(document).ready(function() {
 
     var getWeatherConditions = function(arr) {
         var getInfo = arr.map(function(data) {
-            return data.weather[0].description;
+            return data;
         });
         return getInfo;
     };
 
-    var getRainInfo = function(getWeatherConditions) {
+
+    var getRainInfo = function(data, arr) {
         var rain = [];
-        getWeatherConditions.map(function(data) {
-            if (data.match(/rain/) !== null) {
+        data.map(function(data) {
+            if (data.weather[0].description.match(/rain/) !== null) {
                 rain.push(data);
             }
         });
-        return parseInt((rain.length / getWeatherConditions.length) * 100) + '%';
+        return parseInt((rain.length / data.length) * 100) + '%';
     };
 
     var getDayName = function(day) {
@@ -219,7 +227,6 @@ $(document).ready(function() {
         }
         return maxEl;
     };
-
 
     App();
 });
