@@ -20,6 +20,7 @@ var handleBoxSearch = function() {
                 if (status == 200) {
                     var data = JSON.parse(req.responseText);
                     getWeatherInfo(data);
+
                     console.log(data);
                 } else {
                     alert('Connection Error');
@@ -36,6 +37,8 @@ var handleBoxSearch = function() {
 
     gpsButton.addEventListener('click', function() {
         if (navigator.geolocation) {
+            var container = document.querySelector('.container.responsive.border');
+            container.style.display = 'none';
             /*get url to connect to JSON with weather infro for choosen city */
             navigator.geolocation.getCurrentPosition(function(getPosition) {
                 var getUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
@@ -55,6 +58,7 @@ var handleBoxSearch = function() {
                 }
             };
             req.send();
+
         } else {
             document.querySelector('.container.responsive').style.border = 'thin dotted red';
             console.log('Geolocation is not supported by your browser');
@@ -99,10 +103,6 @@ var getWeatherInfo = function(data) {
                 break;
         }
     }
-    console.log(tomorrow);
-    console.log(getRainInfo(today));
-    console.log();
-    console.log(setTemperature(tomorrow));
 
     if (today.length > 1) {
         /* Data of today*/
@@ -170,17 +170,13 @@ var sortNumbers = function(a, b) {
     return a - b;
 };
 
-var callback = function(callback) {
-    return callback;
-};
-
 var getDate = function(date) {
     var today = new Date();
     today.setDate(today.getDate() + date);
     return today.getDate().toString().length < 2 ? "0" + today.getDate().toString() : today.getDate().toString();
 };
 
-var setTemperature = function(arr) {
+var setTemperature = function(arr, day) {
     var getTemps = arr.map(function(temp) {
         return parseInt(temp.main.temp - 273.16);
     });
