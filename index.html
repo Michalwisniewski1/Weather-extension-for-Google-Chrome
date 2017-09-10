@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="container responsive border">
+    <div class="container responsive border" style="display:none">
         <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-2 col-2"></div>
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-8 col-8">
@@ -36,11 +36,33 @@
     </div>
 
     <div class="container responsive">
-        <div class="row">
-            <div class="col-xl-12 col-log-12 col-md-12 col-sm-12 col-12"></div>
-            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10 col-10">
-                <div class="currentWeather">
-
+        <div class="row current">
+            <div class="col-xl-2 col-log-2 col-md-2 col-sm-1 col-1"></div>
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10 col-10 text-center">
+                <div class="currentWeather fixed-top">
+                    <div class="currentWeatherContainer">
+                        <p class="currentTemp">12&#176;</p>
+                        <p class="currentConditions">Cloudly</p>
+                    </div>
+                    <div class="row fourDaysWeather">
+                        <div class="col-xl-3 col-log-3 col-md-3 col-sm-3 col-3">
+                            <div class="icon">B</div>
+                            <p class="day">Monday</p>
+                            <p class="temps">
+                                <span style="color:#4D6B89;float: ">10</span>
+                                <span style="color: orange;">20</span>
+                            </p>
+                        </div>
+                        <div class="col-xl-3 col-log-3 col-md-3 col-sm-3 col-3">
+                            <div class="icon">B</div>
+                        </div>
+                        <div class="col-xl-3 col-log-3 col-md-3 col-sm-3 col-3">
+                            <div class="icon">B</div>
+                        </div>
+                        <div class="col-xl-3 col-log-3 col-md-3 col-sm-3 col-3">
+                            <div class="icon">B</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-xl-2 col-log-2 col-md-2 col-sm-1 col-1"></div>

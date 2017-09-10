@@ -1,4 +1,7 @@
 const api = 'dce2f1f90e95b4ee2aa26df33f05daaa';
+let days;
+let getTemps;
+let getHighest;
 
 function handleBoxSearch() {
     const inputBox = document.getElementById('weatherSearch');
@@ -36,6 +39,8 @@ function handleBoxSearch() {
 
     gpsButton.addEventListener('click', () => {
         if (navigator.geolocation) {
+            var container = document.querySelector('.container.responsive.border');
+            container.style.display = 'none';
             /*get url to connect to JSON with weather infro for choosen city */
             navigator.geolocation.getCurrentPosition(function(getPosition) {
                 var getUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
@@ -48,7 +53,8 @@ function handleBoxSearch() {
                 var status = req.status;
                 if (status == 200) {
                     var data = JSON.parse(req.responseText);
-                    getWeatherInfo(data)
+                    getWeatherInfo(data);
+                    setTemperatures();
                 } else {
                     alert('Connection Error');
                 }
@@ -69,72 +75,58 @@ function getWeatherInfo(data) {
     let givenCity = data.city.name;
     let country = data.city.country;
     let list = data.list;
-    const days = {
-        0: {
-            data: []
-        },
-        1: {
-            data: []
-        },
-        2: {
-            data: []
-        },
-        3: {
-            data: []
-        },
-        4: {
-            data: []
-        },
+    console.log(list);
+    days = {
+        0: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
     };
     const arrayWithData = list.filter((result, day) => {
         let el = result.dt_txt.match(/-(\d+)(?!.*\-d?)/)[1];
         switch (el) {
             case getDate(0):
                 {
-                    days[0].data.push(list[day]);
+                    days[0].push(list[day]);
                     break;
                 }
             case getDate(1):
                 {
-                    days[1].data.push(list[day]);
+                    days[1].push(list[day]);
                     break;
                 }
             case getDate(2):
                 {
-                    days[2].data.push(list[day]);
+                    days[2].push(list[day]);
                     break;
                 }
             case getDate(3):
                 {
-                    days[3].data.push(list[day]);
+                    days[3].push(list[day]);
                     break;
                 }
             case getDate(4):
                 {
-                    days[4].data.push(list[day]);
+                    days[4].push(list[day]);
                     break;
                 }
         }
     });
     console.table(days);
+    return days;
 };
 
-function setTemperature(day) {
-    var getTemps = arr.filter(function(re) {
-        return parseInt(temp.main.temp - 273.16);
+function setTemperatures() {
+    var insertTemp = document.querySelector('.currentWeather');
+    getTemps = Object.keys(days).map((key) => {
+        let day = days[key];
+        return Object.keys(day).map((index) => {
+            let temp = day[index].main.temp;
+            return parseInt(temp - 273.16);
+        });
     });
     return getTemps;
-};
-
-getTodayInfo.getArrWithData = function(data) {
-    var today = [];
-    var getData = data.list;
-    getData.map(function(result) {
-        if (result.dt_txt.match(/-(\d+)(?!.*\-d?)/)[1] == getDate(0)) {
-            today.push(result);
-        }
-    });
-    return today;
 };
 
 function sortNumbers(a, b) {
@@ -147,7 +139,8 @@ function getDate(date) {
     return today.getDate().toString().length < 2 ? "0" + today.getDate().toString() : today.getDate().toString();
 };
 
-function getHighestTemp(data) {
+function getHighestTemp() {
+
     return data.sort(sortNumbers).slice(-1)[0];
 };
 
@@ -156,8 +149,8 @@ function getLowestTemp(data) {
 };
 
 function getWeatherConditions(arr) {
-    var getInfo = arr.map(function(data) {
-        return data;
+    var getInfo = arr.map(function(element) {
+        return element;
     });
     return getInfo;
 };
@@ -173,8 +166,8 @@ function getRainInfo(data, arr) {
 };
 
 function getDayName(day) {
-    var date = new Date();
-    var namesOfDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let date = new Date();
+    let namesOfDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return (date.getDay() + day) > 6 ? namesOfDays[(date.getDay() + day) - 7] : namesOfDays[date.getDay() + day];
 };
 
