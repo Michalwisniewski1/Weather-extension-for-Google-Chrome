@@ -140,29 +140,29 @@ function getDate(date) {
 };
 
 function getHighestTemp() {
-
-    return data.sort(sortNumbers).slice(-1)[0];
+    return Array.prototype.map.call(getTemps, (highest) => {
+        return highest.sort(sortNumbers).slice(-1)[0];
+    });
 };
 
 function getLowestTemp(data) {
-    return data.sort(sortNumbers)[0];
+    return Array.prototype.map.call(getTemps, (lowest) => {
+        return lowest.sort(sortNumbers)[0];
+    });
 };
 
-function getWeatherConditions(arr) {
-    var getInfo = arr.map(function(element) {
-        return element;
+function getRainInfo() {
+    let getData = Object.keys(days).map((key) => {
+        return Array.prototype.map.call(getData, (element) => {
+          return element;
+        });
     });
-    return getInfo;
-};
-
-function getRainInfo(data, arr) {
-    var rain = [];
-    data.map(function(data) {
-        if (data.weather[0].description.match(/rain/) !== null) {
-            rain.push(data);
-        }
-    });
-    return parseInt((rain.length / data.length) * 100) + '%';
+    // data.map(function(data) {
+    //     if (data.weather[0].description.match(/rain/) !== null) {
+    //         rain.push(data);
+    //     }
+    // });
+    // return parseInt((rain.length / data.length) * 100) + '%';
 };
 
 function getDayName(day) {

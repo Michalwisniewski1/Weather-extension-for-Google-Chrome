@@ -22,11 +22,12 @@ body {
 }
 
 .fourDaysWeather {
+    margin-top: 25px;
 }
 
 .currentWeather {
     font-weight: 100;
-    background-color: #4D6B89;
+    background-color: rgba(0, 130, 120, 0.5);
     height: 140px;
     color: white;
     font-weight: 400;
@@ -50,10 +51,10 @@ p.currentConditions {
 }
 
 div.icon {
-	font-family: 'MeteoconsRegular';
-  font-size: 40px;
-  color: #4D6B89;
-  margin-top: 10px;
+    font-family: 'MeteoconsRegular';
+    font-size: 40px;
+    color: rgba(0, 130, 120, 0.5);
+    margin-top: 10px;
 }
 
 .starter-template {
@@ -75,9 +76,21 @@ div.icon {
     border-radius: 15px;
 }
 
+.temps {
+    margin-top: -10px!important;
+}
+
+.fourDays {
+    border: 1px solid rgba(0, 130, 120, 0.15);
+}
+
+.minTemp {
+    padding-right: 10px;
+}
+
 p.day {
-  color: #4D6B89;
-  font-weight: 100;
+    color: #4D6B89;
+    font-weight: 100;
 }
 
 .container.responsive {
