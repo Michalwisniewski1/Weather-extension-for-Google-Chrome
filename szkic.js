@@ -152,13 +152,14 @@ function getLowestTemp(data) {
 };
 
 function getRainInfo() {
-    return Object.keys(days).map((key) => {
+    let dailyInfo = Object.keys(days).map((key) => {
         let element = days[key];
         return Object.keys(element).filter((index) => {
             let trueCondition = element[index].weather[0].description.match(/rain/);
-            return trueCondition !== null ? element[index].length / element.length : null;
-        });
+            return trueCondition
+        }).length
     });
+    return dailyInfo
     // data.map(function(data) {
     //     if (data.weather[0].description.match(/rain/) !== null) {
     //         rain.push(data);
