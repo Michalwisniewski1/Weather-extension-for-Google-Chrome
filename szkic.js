@@ -39,20 +39,20 @@ function handleBoxSearch() {
 
     gpsButton.addEventListener('click', () => {
         if (navigator.geolocation) {
-            var container = document.querySelector('.container.responsive.border');
+            let container = document.querySelector('.container.responsive.border');
             container.style.display = 'none';
             /*get url to connect to JSON with weather infro for choosen city */
             navigator.geolocation.getCurrentPosition(function(getPosition) {
-                var getUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
+                let getUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
                 localStorage.setItem('GPSLOCATION', getUrl);
             });
             /*get data from openweathermap API */
-            var req = new XMLHttpRequest();
+            let req = new XMLHttpRequest();
             req.open('GET', localStorage.getItem('GPSLOCATION'));
             req.onload = function() {
-                var status = req.status;
+                let status = req.status;
                 if (status == 200) {
-                    var data = JSON.parse(req.responseText);
+                    let data = JSON.parse(req.responseText);
                     getWeatherInfo(data);
                     setTemperatures();
                 } else {
@@ -65,6 +65,22 @@ function handleBoxSearch() {
             console.log('Geolocation is not supported by your browser');
         }
     });
+    if (localStorage.getItem('GPSLOCATION') !== null) {
+        /*get data from openweathermap API */
+        let req = new XMLHttpRequest();
+        req.open('GET', localStorage.getItem('GPSLOCATION'));
+        req.onload = function() {
+            let status = req.status;
+            if (status == 200) {
+                let data = JSON.parse(req.responseText);
+                getWeatherInfo(data);
+                setTemperatures();
+            } else {
+                alert('Connection Error');
+            }
+        };
+        req.send();
+    }
 };
 
 function App() {
@@ -118,7 +134,7 @@ function getWeatherInfo(data) {
 };
 
 function setTemperatures() {
-    var insertTemp = document.querySelector('.currentWeather');
+    let insertTemp = document.querySelector('.currentWeather');
     getTemps = Object.keys(days).map((key) => {
         let day = days[key];
         return Object.keys(day).map((index) => {
@@ -157,15 +173,19 @@ function getRainInfo() {
         return Object.keys(element).filter((index) => {
             let trueCondition = element[index].weather[0].description.match(/rain/);
             return trueCondition
-        }).length
+        }).length / 8 * 100 + '%';
     });
-    return dailyInfo
-    // data.map(function(data) {
-    //     if (data.weather[0].description.match(/rain/) !== null) {
-    //         rain.push(data);
-    //     }
-    // });
-    // return parseInt((rain.length / data.length) * 100) + '%';
+    return dailyInfo;
+};
+
+function getWeatherData() {
+    let dailyInfo = Object.keys(days).map((key) => {
+        let element = days[key];
+        return sortArrByOccurence(Object.keys(element).map((index) => {
+            return element[index].weather[0].description;
+        }));
+    });
+    return dailyInfo;
 };
 
 function getDayName(day) {
@@ -174,21 +194,19 @@ function getDayName(day) {
     return (date.getDay() + day) > 6 ? namesOfDays[(date.getDay() + day) - 7] : namesOfDays[date.getDay() + day];
 };
 
-function sortArrByOccurence(array, data) {
-    if (array.length == 0)
-        return null;
-    var elements = {};
-    var maxEl = array[0],
+function sortArrByOccurence(array) {
+    let elements = {};
+    let maxEl = array[0],
         maxCount = 1;
-    for (var i = 0; i < array.length; i++) {
-        var el = array[i];
-        if (elements[el] == null)
-            elements[el] = 1;
-        else
-            elements[el]++;
-        if (elements[el] > maxCount) {
-            maxEl = el;
-            maxCount = elements[el];
+    for (let i = 0; i < array.length; i++) {
+        if (elements[array[i]] == null) {
+            elements[array[i]] = 1;
+        } else {
+            elements[array[i]]++;
+        }
+        if (elements[array[i]] > maxCount) {
+            maxEl = array[i];
+            maxCount = elements[array[i]];
         }
     }
     return maxEl;
