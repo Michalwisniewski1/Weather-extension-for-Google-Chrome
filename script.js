@@ -1,9 +1,11 @@
+'use strict';
+
 const api = 'dce2f1f90e95b4ee2aa26df33f05daaa';
 let days;
 let getTemps;
 let getHighest;
 
-function handleBoxSearch() {
+let handleBoxSearch = () => {
     const inputBox = document.getElementById('weatherSearch');
     const button = document.getElementById('clickToFind');
     const gpsButton = document.getElementById('getGPSlocation');
@@ -45,21 +47,21 @@ function handleBoxSearch() {
             navigator.geolocation.getCurrentPosition(function(getPosition) {
                 let getUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + getPosition.coords.latitude + "&lon=" + getPosition.coords.longitude + "&appid=" + api;
                 localStorage.setItem('GPSLOCATION', getUrl);
+                /*get data from openweathermap API */
+                let req = new XMLHttpRequest();
+                req.open('GET', localStorage.getItem('GPSLOCATION'));
+                req.onload = function() {
+                    let status = req.status;
+                    if (status == 200) {
+                        let data = JSON.parse(req.responseText);
+                        getWeatherInfo(data);
+                        setTemperatures();
+                    } else {
+                        alert('Connection Error');
+                    }
+                };
+                req.send();
             });
-            /*get data from openweathermap API */
-            let req = new XMLHttpRequest();
-            req.open('GET', localStorage.getItem('GPSLOCATION'));
-            req.onload = function() {
-                let status = req.status;
-                if (status == 200) {
-                    let data = JSON.parse(req.responseText);
-                    getWeatherInfo(data);
-                    setTemperatures();
-                } else {
-                    alert('Connection Error');
-                }
-            };
-            req.send();
         } else {
             document.querySelector('.container.responsive').style.border = 'thin dotted red';
             console.log('Geolocation is not supported by your browser');
@@ -83,11 +85,11 @@ function handleBoxSearch() {
     }
 };
 
-function App() {
+let App = () => {
     handleBoxSearch();
 };
 
-function getWeatherInfo(data) {
+let getWeatherInfo = (data) => {
     let givenCity = data.city.name;
     let country = data.city.country;
     let list = data.list;
@@ -133,7 +135,7 @@ function getWeatherInfo(data) {
     return days;
 };
 
-function setTemperatures() {
+let setTemperatures = () => {
     let insertTemp = document.querySelector('.currentWeather');
     getTemps = Object.keys(days).map((key) => {
         let day = days[key];
@@ -145,29 +147,29 @@ function setTemperatures() {
     return getTemps;
 };
 
-function sortNumbers(a, b) {
+let sortNumbers = (a, b) => {
     return a - b;
 };
 
-function getDate(date) {
+let getDate = (date) => {
     let today = new Date();
     today.setDate(today.getDate() + date);
     return today.getDate().toString().length < 2 ? "0" + today.getDate().toString() : today.getDate().toString();
 };
 
-function getHighestTemp() {
+let getHighestTemp = () => {
     return Array.prototype.map.call(getTemps, (highest) => {
         return highest.sort(sortNumbers).slice(-1)[0];
     });
 };
 
-function getLowestTemp(data) {
+let getLowestTemp = (data) => {
     return Array.prototype.map.call(getTemps, (lowest) => {
         return lowest.sort(sortNumbers)[0];
     });
 };
 
-function getRainInfo() {
+let getRainInfo = () => {
     let dailyInfo = Object.keys(days).map((key) => {
         let element = days[key];
         return Object.keys(element).filter((index) => {
@@ -178,7 +180,7 @@ function getRainInfo() {
     return dailyInfo;
 };
 
-function getWeatherData() {
+let getWeatherData = () => {
     let dailyInfo = Object.keys(days).map((key) => {
         let element = days[key];
         return sortArrByOccurence(Object.keys(element).map((index) => {
@@ -188,13 +190,13 @@ function getWeatherData() {
     return dailyInfo;
 };
 
-function getDayName(day) {
+let getDayName = (day) => {
     let date = new Date();
     let namesOfDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return (date.getDay() + day) > 6 ? namesOfDays[(date.getDay() + day) - 7] : namesOfDays[date.getDay() + day];
 };
 
-function sortArrByOccurence(array) {
+let sortArrByOccurence = (array) => {
     let elements = {};
     let maxEl = array[0],
         maxCount = 1;
