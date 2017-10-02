@@ -77,6 +77,10 @@ let handleBoxSearch = () => {
                 let data = JSON.parse(req.responseText);
                 getWeatherInfo(data);
                 setTemperatures();
+                getIcons();
+                getHighestTemp();
+                getLowestTemp();
+                currentTemp();
             } else {
                 alert('Connection Error');
             }
@@ -131,12 +135,10 @@ let getWeatherInfo = (data) => {
                 }
         }
     });
-    console.table(days);
     return days;
 };
 
 let setTemperatures = () => {
-    let insertTemp = document.querySelector('.currentWeather');
     getTemps = Object.keys(days).map((key) => {
         let day = days[key];
         return Object.keys(day).map((index) => {
@@ -157,16 +159,30 @@ let getDate = (date) => {
     return today.getDate().toString().length < 2 ? "0" + today.getDate().toString() : today.getDate().toString();
 };
 
+let currentTemp = () => {
+    let insertTemp = document.querySelector('.currentTemp');
+    insertTemp.textContent = getTemps[0][0] + '°';
+}
+
 let getHighestTemp = () => {
-    return Array.prototype.map.call(getTemps, (highest) => {
+    let tempSelectors = document.querySelectorAll('.maxTemp');
+    let highestTemp = Array.prototype.map.call(getTemps, (highest) => {
         return highest.sort(sortNumbers).slice(-1)[0];
     });
+    for (var i = 0; i < tempSelectors.length; i++) {
+        tempSelectors[i].textContent = highestTemp[i + 1] + '°';
+    }
 };
 
-let getLowestTemp = (data) => {
-    return Array.prototype.map.call(getTemps, (lowest) => {
+let getLowestTemp = () => {
+    let tempSelectors = document.querySelectorAll('.minTemp');
+    let lowestTemp = Array.prototype.map.call(getTemps, (lowest) => {
         return lowest.sort(sortNumbers)[0];
     });
+    for (var i = 0; i < tempSelectors.length; i++) {
+        tempSelectors[i].textContent = lowestTemp[i + 1] + '°';
+    }
+    return lowestTemp;
 };
 
 let getRainInfo = () => {
@@ -180,21 +196,142 @@ let getRainInfo = () => {
     return dailyInfo;
 };
 
+let getIcons = () => {
+    let setIcons = Array.prototype.map.call(getWeatherData(), function(element) {
+        switch (element) {
+            case 'thunderstorm with light rain':
+            case 'thunderstorm with rain':
+            case 'thunderstorm with heavy rain':
+            case 'light thunderstorm':
+            case 'thunderstorm':
+            case 'heavy thunderstorm':
+            case 'ragged thunderstorm':
+            case 'thunderstorm with light drizzle':
+            case 'thunderstorm with drizzle':
+            case 'thunderstorm with heavy drizzle':
+                return 'O';
+                break;
+            case 'light intensity drizzle':
+            case 'drizzle':
+            case 'heavy intensity drizzle':
+            case 'light intensity drizzle rain':
+            case 'drizzle rain':
+            case 'heavy intensity drizzle rain':
+            case 'shower rain and drizzle':
+            case 'heavy shower rain and drizzle':
+            case 'shower drizzle':
+                return 'Q';
+                break;
+            case 'freezing rain':
+            case 'light intensity shower rain':
+            case 'shower rain':
+            case 'heavy intensity shower rain':
+            case 'ragged shower rain':
+                return '8';
+                break;
+            case 'extreme rain':
+            case 'very heavy rain':
+            case 'heavy intensity rain':
+            case 'moderate rain':
+            case 'light rain':
+                return 'R';
+                break;
+            case 'light snow':
+            case 'snow':
+            case 'heavy snow':
+            case 'sleet':
+            case 'light rain and snow':
+            case 'rain and snow':
+            case 'light shower snow':
+            case 'shower snow':
+            case 'heavy shower snow':
+                return 'W';
+                break;
+            case 'mist':
+            case 'smoke':
+            case 'haze':
+            case 'sand, dust whirls':
+            case 'fog':
+            case 'sand':
+            case 'dust':
+            case 'volcanic ash':
+            case 'squalls':
+            case 'tornado':
+                return 'M';
+                break;
+            case 'clear sky':
+                return 'B';
+                break;
+            case 'few clouds':
+                return 'H';
+                break;
+            case 'scattered clouds':
+            case 'broken clouds':
+            case 'overcast clouds':
+                return 'N';
+                break;
+            case 'tornado':
+                return 'S';
+                break;
+            case 'tropical storm':
+                return '!';
+                break;
+            case 'hurricane':
+                return 'S';
+                break;
+
+            case 'hot':
+                return ',';
+                break;
+            case 'windy':
+                return 'F';
+                break;
+            case 'hail':
+                return
+            case 'cold':
+                return 'G';
+                break;
+            default:
+                return ')';
+                break;
+        }
+    });
+    let tempSelectors = document.querySelectorAll('.icon');
+
+    for (var i = 0; i < tempSelectors.length; i++) {
+        tempSelectors[i].textContent = setIcons[i + 1];
+    }
+};
+
 let getWeatherData = () => {
+    let currentTemp = document.querySelector('.currentConditions');
     let dailyInfo = Object.keys(days).map((key) => {
         let element = days[key];
         return sortArrByOccurence(Object.keys(element).map((index) => {
             return element[index].weather[0].description;
         }));
     });
+    currentTemp.textContent = dailyInfo[0];
     return dailyInfo;
 };
 
 let getDayName = (day) => {
     let date = new Date();
     let namesOfDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    return (date.getDay() + day) > 6 ? namesOfDays[(date.getDay() + day) - 7] : namesOfDays[date.getDay() + day];
+    return (date.getDay()) > 6 ? namesOfDays[(date.getDay()) - 7] : namesOfDays[date.getDay() + day - 1];
 };
+
+let setDays = () => {
+    let days = [1, 2, 3, 4, 5];
+    let writeDays = days.map((day) => {
+        return getDayName(day);
+    });
+    for (var i = 0; i < tempSelectors.length; i++) {
+        tempSelectors[i].textContent = lowestTemp[i + 1] + '°';
+    }
+    return writeDays;
+};
+
 
 let sortArrByOccurence = (array) => {
     let elements = {};
