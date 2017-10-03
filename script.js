@@ -82,6 +82,7 @@ let handleBoxSearch = () => {
                 getLowestTemp();
                 currentTemp();
                 setDays();
+                dravGraph();
             } else {
                 alert('Connection Error');
             }
@@ -348,6 +349,16 @@ let sortArrByOccurence = (array) => {
         }
     }
     return maxEl;
+};
+
+let dravGraph = () => {
+    let canvas = document.getElementById('canvas');
+    let weatherContainers = document.querySelectorAll('.fourDays');
+    for (var i = 0; i < weatherContainers.length; i++) {
+        weatherContainers[i].addEventListener('click', (e) => {
+            console.log(e);
+        });
+    }
 };
 
 App();
