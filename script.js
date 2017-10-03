@@ -81,6 +81,7 @@ let handleBoxSearch = () => {
                 getHighestTemp();
                 getLowestTemp();
                 currentTemp();
+                setDays();
             } else {
                 alert('Connection Error');
             }
@@ -169,9 +170,9 @@ let getHighestTemp = () => {
     let highestTemp = Array.prototype.map.call(getTemps, (highest) => {
         return highest.sort(sortNumbers).slice(-1)[0];
     });
-    for (var i = 0; i < tempSelectors.length; i++) {
-        tempSelectors[i].textContent = highestTemp[i + 1] + '°';
-    }
+    return Array.prototype.map.call(tempSelectors, (element, index) => {
+        return element.textContent = highestTemp[index] + '°';
+    });
 };
 
 let getLowestTemp = () => {
@@ -179,13 +180,13 @@ let getLowestTemp = () => {
     let lowestTemp = Array.prototype.map.call(getTemps, (lowest) => {
         return lowest.sort(sortNumbers)[0];
     });
-    for (var i = 0; i < tempSelectors.length; i++) {
-        tempSelectors[i].textContent = lowestTemp[i + 1] + '°';
-    }
-    return lowestTemp;
+    return Array.prototype.map.call(tempSelectors, (element, index) => {
+        return element.textContent = lowestTemp[index] + '°';
+    });
 };
 
 let getRainInfo = () => {
+    let daysContainers = document.querySelectorAll('.fourDays');
     let dailyInfo = Object.keys(days).map((key) => {
         let element = days[key];
         return Object.keys(element).filter((index) => {
@@ -323,12 +324,10 @@ let getDayName = (day) => {
 
 let setDays = () => {
     let days = [1, 2, 3, 4, 5];
-    let writeDays = days.map((day) => {
-        return getDayName(day);
+    let daySelectors = document.querySelectorAll('p.day');
+    let writeDays = Array.prototype.map.call(daySelectors, (day, index) => {
+        return day.textContent = getDayName(index + 1);
     });
-    for (var i = 0; i < tempSelectors.length; i++) {
-        tempSelectors[i].textContent = lowestTemp[i + 1] + '°';
-    }
     return writeDays;
 };
 
