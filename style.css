@@ -13,8 +13,8 @@
 }
 
 body {
-    width: 500px;
-    height: 450px;
+    width: 510px;
+    height: 400px;
 }
 
 .hide {
@@ -23,6 +23,10 @@ body {
 
 .fourDaysWeather {
     margin-top: 25px;
+}
+
+.showWeather {
+    display: none;
 }
 
 .currentWeather {
@@ -88,6 +92,14 @@ div.icon {
     border: 1px solid rgba(0, 130, 120, 0.15);
 }
 
+.fourDays:first-child {
+    padding-right: 0px!important;
+}
+
+.fourDays:last-child {
+    padding-left: 0px!important;
+}
+
 .minTemp {
     padding-right: 10px;
 }
@@ -100,6 +112,7 @@ p.day {
 .container.responsive {
     width: 80%;
     height: 70vh;
+    margin-top: 25px;
 }
 
 .text-center.title {

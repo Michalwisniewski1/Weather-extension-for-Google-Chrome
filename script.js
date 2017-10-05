@@ -9,6 +9,8 @@ let handleBoxSearch = () => {
     const inputBox = document.getElementById('weatherSearch');
     const button = document.getElementById('clickToFind');
     const gpsButton = document.getElementById('getGPSlocation');
+    const searchContainer = document.querySelector('.searchCity');
+    const weatherContainer = document.querySelector('.showWeather');
     let city;
     let url;
 
@@ -24,7 +26,16 @@ let handleBoxSearch = () => {
                 let status = req.status;
                 if (status == 200) {
                     let data = JSON.parse(req.responseText);
+                    searchContainer.style.display = "none";
+                    weatherContainer.style.display = "block";
                     getWeatherInfo(data);
+                    setTemperatures();
+                    getIcons();
+                    getHighestTemp();
+                    getLowestTemp();
+                    currentTemp();
+                    setDays();
+                    dravGraph();
                     console.log(data);
                 } else {
                     alert('Connection Error');
@@ -54,8 +65,16 @@ let handleBoxSearch = () => {
                     let status = req.status;
                     if (status == 200) {
                         let data = JSON.parse(req.responseText);
+                        searchContainer.style.display = "none";
+                        weatherContainer.style.display = "block";
                         getWeatherInfo(data);
                         setTemperatures();
+                        getIcons();
+                        getHighestTemp();
+                        getLowestTemp();
+                        currentTemp();
+                        setDays();
+                        dravGraph();
                     } else {
                         alert('Connection Error');
                     }
@@ -75,6 +94,8 @@ let handleBoxSearch = () => {
             let status = req.status;
             if (status == 200) {
                 let data = JSON.parse(req.responseText);
+                searchContainer.style.display = "none";
+                weatherContainer.style.display = "block";
                 getWeatherInfo(data);
                 setTemperatures();
                 getIcons();
@@ -320,7 +341,7 @@ let getWeatherData = () => {
 let getDayName = (day) => {
     let date = new Date();
     let namesOfDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    return (date.getDay()) > 6 ? namesOfDays[(date.getDay()) - 7] : namesOfDays[date.getDay() + day - 1];
+    return (date.getDay() + day) > 6 ? namesOfDays[date.getDay() + day - 7] : namesOfDays[date.getDay() + day];
 };
 
 let setDays = () => {
@@ -354,11 +375,16 @@ let sortArrByOccurence = (array) => {
 let dravGraph = () => {
     let canvas = document.getElementById('canvas');
     let weatherContainers = document.querySelectorAll('.fourDays');
+    let info;
     for (var i = 0; i < weatherContainers.length; i++) {
-        weatherContainers[i].addEventListener('click', (e) => {
-            console.log(e);
+        weatherContainers[i].addEventListener('mouseenter', (container) => {
+            console.log(container.path);
+            info = container.path.filter((element) => {
+                console.log(element);
+            });
         });
     }
+    return info;
 };
 
 App();
